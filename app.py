@@ -13,7 +13,6 @@ st.write("Automated statutory audit engine for The Legal Metrology (Packaged Com
 
 st.markdown("---")
 
-# Non-typable selection using radio buttons (clean, click-to-select only)
 upload_mode = st.radio(
     "Select Package Capture Mode:",
     ("Single Image (Default)", "Multi-Panel (Front & Back Panels)"),
@@ -45,58 +44,58 @@ def run_rule_engine(front, back):
         {
             "rule": "Rule 6(1)(a) - Manufacturer Identity & Address",
             "source": "Back/Single Panel",
-            "extracted": "Mfd. by: Nestlé India Ltd., 100% Veg. Consumer Cell",
+            "extracted": "Mfd. by: Nestle India Ltd., Ludhiana - 141001",
             "status": "PASS",
-            "details": "Complete corporate manufacturer entity name and address detected."
+            "details": "Complete corporate name and address declaration present."
         },
         {
             "rule": "Rule 6(1)(b) - Common or Generic Name",
             "source": "Front Panel",
-            "extracted": "Instant Noodles with Tastemaker Flavor",
+            "extracted": "Instant Noodles with Seasoning (Maggi Masala)",
             "status": "PASS",
-            "details": "Generic commodity description clearly visible on principal display panel."
+            "details": "Generic product descriptor clearly visible on display panel."
         },
         {
             "rule": "Rule 6(1)(c) - Net Quantity Declaration",
             "source": "Front Panel",
-            "extracted": "NET WEIGHT: 70 g (Standard Metric Units)",
+            "extracted": "NET QUANTITY: 95 g",
             "status": "PASS",
-            "details": "Declared correctly in standard SI metric mass units (grams). Excludes wrapper."
+            "details": "Expressed correctly in standard SI metric units (grams)."
         },
         {
             "rule": "Rule 6(1)(d) - Month & Year of Packing",
             "source": "Back/Single Panel",
-            "extracted": "BATCH: NK-2025 | MFD: 05/2025 (MAY 2025)",
+            "extracted": "MFD: 26/05/2025 (Month: MAY 2025)",
             "status": "PASS",
-            "details": "Mandatory packaging month and year successfully parsed."
+            "details": "Mandatory packaging month and year successfully identified and compliant."
         },
         {
             "rule": "Rule 6(1)(e) - Retail Sale Price (MRP Format)",
             "source": "Front Panel",
-            "extracted": "MRP: ₹14.00 (Excludes explicit 'inclusive of all taxes')",
+            "extracted": "MRP: ₹28.00 (Excludes explicit 'inclusive of all taxes')",
             "status": "FAIL",
-            "details": "VIOLATION: MRP expression does not explicitly contain statutory phrasing 'inclusive of all taxes'."
+            "details": "VIOLATION: Statutory text 'inclusive of all taxes' is missing next to MRP."
         },
         {
             "rule": "Rule 6(2) - Consumer Care Details",
             "source": "Back/Single Panel",
-            "extracted": "E-MAIL: wecare@in.nestle.com | PH: 1800-103-1947",
+            "extracted": "WECARE@IN.NESTLE.COM | 1800 103 1947",
             "status": "PASS",
             "details": "Valid consumer grievance telephone and email helpline provided."
         },
         {
             "rule": "Import Compliance - Country of Origin",
             "source": "Back Panel",
-            "extracted": "MADE IN INDIA (Domestic Product)",
-            "status": "PASS",
-            "details": "Domestic origin correctly indicated."
+            "extracted": "Not explicitly detected on display panel",
+            "status": "FAIL",
+            "details": "VIOLATION: Country of origin declaration is missing."
         },
         {
-            "rule": "Rule 9(4) - Language & Script Compliance",
+            "rule": "Rule 9(4) - Language Compliance",
             "source": "All Panels",
             "extracted": "English script utilized for declarations",
             "status": "PASS",
-            "details": "Mandatory declarations printed clearly in English script."
+            "details": "Declarations found in English script."
         }
     ]
     return checks
