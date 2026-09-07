@@ -10,7 +10,7 @@ uploaded_file = st.file_uploader("Upload Packaged Commodity Label / E-commerce L
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Package Label", use_column_width=True)
+    st.image(image, caption="Uploaded Package Label")
     
     if st.button("Run Legal Metrology Audit"):
         with st.spinner("Analyzing declarations and running rule engine..."):
