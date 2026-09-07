@@ -13,11 +13,10 @@ st.write("Automated statutory audit engine for The Legal Metrology (Packaged Com
 
 st.markdown("---")
 
-# Dropdown selection for upload mode as requested
 upload_mode = st.selectbox(
     "Select Package Capture Mode:",
-    ["Single Image (Default)", "Multi-Panel (Front & Back Panels for Cylinders/Bottles)"]
-]
+    ("Single Image (Default)", "Multi-Panel (Front & Back Panels for Cylinders/Bottles)")
+)
 
 front_img, back_img = None, None
 
@@ -40,7 +39,6 @@ else:
             st.image(back_img, caption="Back / Side Panel")
 
 def run_rule_engine(front, back):
-    # Dynamic inspection check tailored accurately to packaged food commodities like Maggi / noodles / general goods
     checks = [
         {
             "rule": "Rule 6(1)(a) - Manufacturer Identity & Address",
