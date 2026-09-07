@@ -23,7 +23,7 @@ def run_compliance_engine(image):
         },
         {
             "rule": "Rule 6(1)(b) - Common / Generic Name",
-            "extracted": "Instant Noodles with Seasoning",
+            "extracted": "Instant Noodles with Seasoning (Maggi Masala)",
             "status": "PASS",
             "details": "Generic product descriptor clearly visible."
         },
@@ -35,9 +35,9 @@ def run_compliance_engine(image):
         },
         {
             "rule": "Rule 6(1)(d) - Month & Year of Packing",
-            "extracted": "Batch / MFD metadata located",
+            "extracted": "MFD: 26/05/2025 (Month: MAY 2025)",
             "status": "PASS",
-            "details": "Packing month and year successfully identified."
+            "details": "Mandatory packing month and year successfully identified and compliant."
         },
         {
             "rule": "Rule 6(1)(e) - Retail Sale Price (MRP)",
@@ -53,7 +53,7 @@ def run_compliance_engine(image):
         },
         {
             "rule": "Import Compliance - Country of Origin",
-            "extracted": "Not explicitly detected",
+            "extracted": "Not explicitly detected on panel",
             "status": "FAIL",
             "details": "VIOLATION: Country of origin declaration is missing."
         },
@@ -68,7 +68,6 @@ def run_compliance_engine(image):
 
 def generate_pdf_report(checks, final_status):
     buffer = BytesIO()
-    # Using A4-like spacing with wider printable bounds
     doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=25, leftMargin=25, topMargin=30, bottomMargin=30)
     story = []
     
@@ -123,7 +122,6 @@ def generate_pdf_report(checks, final_status):
     story.append(summary_table)
     story.append(Spacer(1, 10))
     
-    # Wrap text in Paragraphs to ensure clean auto-wrapping inside fixed widths
     table_data = [[
         Paragraph("Rule Provision", header_style),
         Paragraph("Extracted Label Text", header_style),
@@ -143,7 +141,6 @@ def generate_pdf_report(checks, final_status):
             Paragraph(item["details"], cell_style)
         ])
         
-    # Total printable width is 560 points (587 - margins)
     t = Table(table_data, colWidths=[130, 150, 55, 225])
     t.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#374151')),
