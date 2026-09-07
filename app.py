@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image, ImageOps, ImageEnhance
+from PIL import Image
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
@@ -13,9 +13,11 @@ st.write("Automated statutory audit engine for The Legal Metrology (Packaged Com
 
 st.markdown("---")
 
-upload_mode = st.selectbox(
+# Non-typable selection using radio buttons (clean, click-to-select only)
+upload_mode = st.radio(
     "Select Package Capture Mode:",
-    ("Single Image (Default)", "Multi-Panel (Front & Back Panels for Cylinders/Bottles)")
+    ("Single Image (Default)", "Multi-Panel (Front & Back Panels)"),
+    horizontal=True
 )
 
 front_img, back_img = None, None
@@ -129,7 +131,6 @@ def generate_pdf_report(checks, final_status):
     
     table_data = [[
         Paragraph("Rule Provision", header_style),
-        Paragraph("Source Panel", header_style),
         Paragraph("Extracted Text & Metadata", header_style),
         Paragraph("Status", header_style),
         Paragraph("Evaluation Findings", header_style)
@@ -142,13 +143,12 @@ def generate_pdf_report(checks, final_status):
         
         table_data.append([
             Paragraph(item["rule"], cell_style),
-            Paragraph(item["source"], cell_style),
             Paragraph(item["extracted"], cell_style),
             status_cell,
             Paragraph(item["details"], cell_style)
         ])
         
-    t = Table(table_data, colWidths=[120, 75, 140, 50, 175])
+    t = Table(table_data, colWidths=[130, 150, 55, 225])
     t.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#374151')),
         ('ALIGN', (0,0), (-1,-1), 'LEFT'),
@@ -163,7 +163,9 @@ def generate_pdf_report(checks, final_status):
     buffer.seek(0)
     return buffer
 
-if front_img is not None or back_img is not None:
+target_img = front_img if front_img is not None else back_img
+
+if target_img is not None:
     if st.button("Run Statutory Compliance Audit"):
         with st.spinner("Processing image pixels and running rule engine..."):
             checks = run_rule_engine(front_img, back_img)
